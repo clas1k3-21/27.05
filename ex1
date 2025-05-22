@@ -1,0 +1,130 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Security.Permissions;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Выберите тему: \n1. Темная \n2. Светлая");
+
+            string choice = Console.ReadLine();
+
+            IThemeFactory factory = null;
+
+            if (choice == "1")
+            {
+                factory = new DarkThemeFactory();
+            }
+            else if (choice == "2")
+            {
+                factory = new LightThemeFactory();
+            }
+           
+            var game = new Theme(factory);
+
+            game.Start();
+        }
+
+
+        public interface ITheme
+        {
+            void Describe();
+        }
+
+        public interface IButtonsAndWindows
+        {
+            void Describe();
+        }
+
+        public class LightTheme : ITheme
+        {
+            public void Describe()
+            {
+                Console.WriteLine("Вы выбрали светлую тему");
+            }
+        }
+
+        public class DarkTheme : ITheme
+        {
+            public void Describe()
+            {
+                Console.WriteLine("Вы выбрали темную тему");
+            }
+        }
+
+        public class LightThemeBAW : IButtonsAndWindows
+        {
+            public void Describe()
+            {
+                Console.WriteLine("Создано окно: светлое");
+                Console.WriteLine("Создана кнопка: светлая");
+            }
+        }
+        public class DarkThemeBAW : IButtonsAndWindows
+        {
+            public void Describe()
+            {
+                Console.WriteLine("Создано окно: темное");
+                Console.WriteLine("Создана кнопка: темная");
+            }
+        }
+        public interface IThemeFactory
+        {
+            ITheme CreateTheme();
+
+            IButtonsAndWindows CreateButtonsAndWindows();
+        }
+
+        public class LightThemeFactory : IThemeFactory
+        {
+            public ITheme CreateTheme()
+            {
+                return new LightTheme();
+            }
+
+            public IButtonsAndWindows CreateButtonsAndWindows()
+            {
+                return new LightThemeBAW();
+            }
+        }
+
+        public class DarkThemeFactory : IThemeFactory
+        {
+            public ITheme CreateTheme()
+            {
+                return new DarkTheme();
+            }
+
+            public IButtonsAndWindows CreateButtonsAndWindows()
+            {
+                return new DarkThemeBAW();
+            }
+        }
+
+        private class Theme
+        {
+            private ITheme theme;
+            private IButtonsAndWindows buttonsAndWindows;
+
+            public Theme(IThemeFactory factory)
+            {
+                theme = factory.CreateTheme();
+                buttonsAndWindows = factory.CreateButtonsAndWindows();
+            }
+            public void Start()
+            {
+                Console.WriteLine("Добро пожаловать!");
+                theme.Describe();
+                buttonsAndWindows.Describe();
+            }
+        }
+    }
+
+}
