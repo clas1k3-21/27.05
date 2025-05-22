@@ -1,0 +1,125 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Security.Permissions;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp22
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            AccessoriesBuild gamingPCBuilder = new GamingPCBuilder();
+            Accessories director = new AccessoriesDirector(gamingPCBuilder);
+
+            director.
+
+            Character warrior = director.GetCharacter();
+
+            Console.WriteLine(warrior);
+        }
+    }
+
+    public class Accessories 
+    { 
+        public string ProcessorType { get; set; }
+        public int RAMmemmory { get; set; }
+        public int HardDisk { get; set; }
+        public string VideoCardType {  get; set; }
+
+        public override string ToString()
+        {
+            return $"Тип процессора: {ProcessorType}\n" +
+                $"Количество оперативной памяти: {RAMmemmory}\n" +
+                $"Объем жесткого диска: {HardDisk}\n" +
+                $"Тип видеокарты: {VideoCardType}\n";
+        }
+    }
+
+    public abstract class AccessoriesBuild
+    {
+        protected Accessories accessories = new Accessories();
+
+        public abstract void SetProcessorType();
+        public abstract void SetRAMmemmory();
+        public abstract void SetHardDisk();
+        public abstract void SetVideoCardType();
+
+        public Accessories GetResult()
+        {
+            return accessories;
+        }
+    }
+
+    public class GamingPCBuilder : AccessoriesBuild
+    {
+        public override void SetProcessorType()
+        {
+            Console.WriteLine("Процессор: Intel Core i9");
+        }
+
+        public override void SetRAMmemmory()
+        {
+            Console.WriteLine("Оперативная память: 32 ГБ");
+        }
+
+        public override void SetHardDisk()
+        {
+            Console.WriteLine("Жёсткий диск: 2 ТБ SSD");
+        }
+
+        public override void SetVideoCardType()
+        {
+            Console.WriteLine("Видеокарта: NVIDIA RTX 3080");
+        }
+    }
+
+    public class OfficePCBuilder : AccessoriesBuild
+    {
+        public override void SetProcessorType()
+        {
+            Console.WriteLine("Процессор: Intel Core i5-12400");
+        }
+
+        public override void SetRAMmemmory()
+        {
+            Console.WriteLine("Оперативная память: 16 ГБ");
+        }
+
+        public override void SetHardDisk()
+        {
+            Console.WriteLine("Жёсткий диск: 1 ТБ SSD");
+        }
+
+        public override void SetVideoCardType()
+        {
+            Console.WriteLine("Видеокарта: интегрированная");
+        }
+    }
+
+    public class AccessoriesDirector
+    {
+        private AccessoriesBuild build;
+
+        public AccessoriesDirector(AccessoriesBuild build)
+        {
+            this.build = build;
+        }
+
+        public void BuildCharacter()
+        {
+            build.SetProcessorType();
+            build.SetRAMmemmory();
+            build.SetHardDisk();
+            build.SetVideoCardType();
+        }
+
+        public Accessories GetAccessories()
+        {
+            return build.GetResult();
+        }
+    }
+}
