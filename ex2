@@ -12,23 +12,32 @@ namespace ConsoleApp22
     {
         static void Main(string[] args)
         {
-            AccessoriesBuild gamingPCBuilder = new GamingPCBuilder();
-            Accessories director = new AccessoriesDirector(gamingPCBuilder);
+            Console.WriteLine("Выберите тип компьютера: 1 - Игровой, 2 - Офисный");
+            int choice = int.Parse(Console.ReadLine());
+            AccessoriesBuild builder = null ;
 
-            director.
+            Console.WriteLine("Собран компьютер:");
+            if (choice == 1)
+            {
+                builder = new GamingPCBuilder();
+            }
+            else if (choice == 2)
+            {
+                builder = new OfficePCBuilder();
+            }
 
-            Character warrior = director.GetCharacter();
-
-            Console.WriteLine(warrior);
+            AccessoriesDirector director = new AccessoriesDirector(builder);
+            director.BuildCharacter();
+            Accessories PC = new Accessories();
         }
     }
 
-    public class Accessories 
-    { 
+    public class Accessories
+    {
         public string ProcessorType { get; set; }
         public int RAMmemmory { get; set; }
         public int HardDisk { get; set; }
-        public string VideoCardType {  get; set; }
+        public string VideoCardType { get; set; }
 
         public override string ToString()
         {
